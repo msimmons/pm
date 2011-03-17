@@ -8,9 +8,12 @@ import net.contrapt.pm.PropertyResolver
 import net.contrapt.pm.project.Project
 
 /**
-* A context encapsulates the environment in which a tool or list of tools
-* is run.  A context is always based on a project and a file. 
-*/
+ * A context encapsulates the environment in which a tool or list of tools
+ * is run.  A context is always based on a project and a file within that project.
+ *
+ * The context will also store results of each tool run for potential use by the application
+ * or downstream tools
+ */
 class Context(val project:Project, val file:File) extends PropertyResolver {
 
 	setParentResolver(project)
@@ -38,10 +41,10 @@ class Context(val project:Project, val file:File) extends PropertyResolver {
 		tools.foreach(println)
 	}
 
-	private def prepare(proc:ToolProcess):Unit = {
+	private def prepare(process:ToolProcess): Unit = {
 		//promptForProperties(spec.tool)
-		proc.command = replaceProperties(proc.config.command)
-		proc.env = replaceEnvironment(proc.config.env)
+		process.command = replaceProperties(process.config.command)
+		process.env = replaceEnvironment(process.config.env)
 	}
 
 	/**
